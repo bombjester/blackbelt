@@ -1,0 +1,158 @@
+<html ng-app="app">
+	<head>
+		<title> Black Belt</title>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+  		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+		<script>
+			var angular = angular.module('app', ['ngRoute']);
+			angular.config(function($routeProvider, $locationProvider){
+				$routeProvider
+
+				.when('/' , {
+					templateUrl: 'static/partials/login.html'
+				})
+				.when('/main/:id',{
+					templateUrl: 'static/partials/main.html'
+				})
+				.when('/addquestion/:id',{
+					templateUrl: 'static/partials/add.html'
+				})
+				.when('/play/:id',{
+					templateUrl: 'static/partials/play1.html'
+				})
+				.otherwise({
+					redirectTo: '/'
+				});	
+			})
+			angular.controller('logincontroller', function($scope, userfactory, $location){
+				$scope.USERLOGGEDIN = "";
+				$scope.errors = [];
+				$scope.adduser = function(){
+					
+					userfactory.add($scope.box, function(data){
+						$scope.USERLOGGEDIN = data;
+						
+						if( typeof data == 'undefined'){
+							$scope.errors.push("Name already Taken!");
+						}
+						else{
+
+							$location.path('/main/' + data);
+						}
+					});
+				
+
+					
+				}
+
+				
+			})
+			angular.factory('scorefactory', function($http){
+				var functions = {};
+				var scores = [];
+				functions.names = function(callback){
+					$http.get('/getscores').success(function(result){
+						scores = result;
+						callback(scores);
+					})
+
+				}
+				return functions;
+			})
+			angular.controller('maincontroller', function($scope, userfactory, $routeParams, $location, questionfactory, scorefactory){
+				$scope.questions= [];
+				$scope.name = [];
+				$scope.scores = [];
+
+				scorefactory.names(function(data){$scope.scores = data});
+				userfactory.names($routeParams.id, function(data){$scope.name = data});
+
+				$scope.cancel = function(){
+					$location.path('/main/' + $routeParams.id);
+				}
+
+				$scope.addquestion = function(){
+				
+					questionfactory.add($scope.add, function(){
+						$location.path('/main/'+ $routeParams.id);
+					});
+				}
+
+				$scope.answer = function(result){
+
+						console.log(result);
+				}
+
+				questionfactory.findquestions(function(data){$scope.questions= data});
+				
+				
+			})
+
+			angular.factory("questionfactory", function($http){
+				var functions = {};
+				var questions = [];
+				functions.add = function(data, callback){
+					$http.post('/addquestion', data).success(function(result){
+						
+						if (typeof result === 'object'){
+							callback();
+						}
+					})
+				}
+				functions.findquestions = function(callback){
+					$http.get('/getquestions').success(function(result){
+						var roll1 = 0;
+						var roll2 = 0;
+						var roll3 = 0;
+						while (roll1 == roll2 || roll1 == roll3 || roll2 == roll3){
+							
+							roll1 = Math.floor(Math.random()*result.length);
+							roll2 = Math.floor(Math.random()*result.length);
+							roll3 = Math.floor(Math.random()*result.length);
+						}
+						
+						
+						questions.push(result[roll1]);
+							questions.push(result[roll2]);
+								questions.push(result[roll3]);
+						callback(questions);
+					})
+				}
+
+				return functions;
+			})
+			angular.controller('addcontroller', function($scope, $routeParams){
+
+			})
+			angular.factory('userfactory', function($http){
+				var USERLOGGEDIN = ""; 
+				var functions = {};
+				var name = [];
+				
+				functions.add = function(data,callback){
+					$http.post('/add', data).success(function(result){
+						
+						USERLOGGEDIN = result[0]._id;
+						callback(USERLOGGEDIN);
+						
+						
+					})
+				}
+				functions.names = function(id, callback){
+
+					$http.get('/getname/'+ id).success(function(result){
+						name = [];
+						name.push(result);
+						callback(name);
+
+					})
+				}
+				return functions;
+			})
+		</script>
+	</head>
+	<body>
+		<div ng-view="">
+		</div>
+	</body>
+</html>

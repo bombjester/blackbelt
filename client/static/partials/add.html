@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<h1>New Question</h1>
+		<div ng-controller='maincontroller'>
+			<div ng-repeat="x in name">
+				<a href='#/main/{{x[0]._id}}'>Home</a>
+			</div>
+
+			<form>
+				<p>Question: <input type="text" ng-model="add.question"></p>
+				<p>Correct Answer: <input type="text" ng-model="add.answer"></p>
+				<p>Fake Answer 1: <input type="text" ng-model="add.fake1"></p>
+				<p>Fake Answer 2: <input type="text" ng-model="add.fake2"></p>
+				<input type="submit" value = "Cancel" ng-click="cancel()">
+				<input type="submit" value = "Add Question" ng-click="addquestion()">
+			</form>
+		</div>
+	</body>
+</html>

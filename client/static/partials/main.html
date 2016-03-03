@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Main </title>
+	</head>
+	<body>
+		<div ng-controller="maincontroller">
+			<div ng-repeat="x in name">
+				<h1 style="text-align: center;"> Welcome {{x[0].name}}!</h1>
+				<div style="border: solid; height: 100px; width: 200px; margin-left: 40%; background-color: gray">
+					
+					<a href="#/play/{{x[0]._id}}"><button style="padding: 10px; margin-left: 55px; background-color: green;"> Play</button></a>
+					<p> Click the button above to start the trivia game</p>
+				</div>
+
+		
+				<a href="#/addquestion/{{x[0]._id}}">Add a Question</a>
+
+			</div>
+			<p>Search: <input type="text" ng-model="filter_name"> </p>
+			<table>
+				<tr>
+					<td>Name</td>
+					<td>Score</td>
+					<td>Percentage</td>
+				</tr>
+				<tr ng-repeat="y in scores | filter: filter_name">
+					<td>{{y.name}}</td>
+					<td>{{y.score}}</td>
+					<td>{{y.percent}}<td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

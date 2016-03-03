@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<div ng-controller="logincontroller">
+		<h1> Welcome</h1>
+		<form>
+			<input type="text" ng-model="box.name">
+			<input type="submit" value="Login" ng-click="adduser()">
+			<p ng-repeat="x in errors">{{x}}</p>
+		</div>
+
+	</body>
+</html>

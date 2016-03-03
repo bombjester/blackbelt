@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Triva Test</title>
+	</head>
+
+	<body>
+		<div ng-controller="maincontroller">
+
+			<div ng-repeat="x in name">
+				<h1 style="text-align: center;"> Hi {{x[0].name}}!</h1>
+				<p> Choose an answer for each of the questions and submit the test once done.</p>
+				<p>Good Luck!</p>
+			</div>
+
+			<form>
+				<div style="border: solid;margin-bottom: 5px; padding: 20px" ng-repeat="y in questions">
+					<p>{{$index+1}}.  {{y.question}}</p>
+					<p><input type="radio" ng-model="result" ng-value-"correct" name="{{$index+1}}">{{y.answer}}</p>
+					<p><input type="radio" ng-model="result" ng-value-"correct" name="{{$index+1}}">{{y.fake1}}</p>
+					<p><input type="radio" ng-model="result" ng-value-"correct" name="{{$index+1}}">{{y.fake2}}</p>
+					
+				</div>
+					<input style="width: 100px; height: 200px;" type="submit" value="cancel" ng-click="cancel()">
+					<input type="submit" value="submit" ng-click="answer(result)">
+					{{result}}
+					
+			</form>
+		</div>
+	</body>
+</html>

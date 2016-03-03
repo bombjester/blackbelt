@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+
+	<body ng-app="app">
+		<div ng-controller="maincontroller">
+
+			<div  style="border: solid" ng-repeat="x in name">
+				<h1 style="text-align: center;"> Hi {{x[0].name}}!</h1>
+				<p> Choose an answer for each of the questions and submit the test once done.<p>
+				<p>Good Luck!</p>
+			</div>
+			<div style="border: solid;margin-bottom: 5px; padding: 20px" ng-repeat="y in questions">
+
+				<p>{{$index+1}}.  {{y.question}}<p>
+					
+						<label><input type="radio"  ng-model="result" name="{{$index+1}}" ng-value="pass" >{{y.answer}}</input>
+						<label><input type="radio"  ng-model="result" name="{{$index+1}}" ng-value="fail" >{{y.fake1}}</input>
+						<!-- <label><input type="radio"  ng-model="result" name="{{$index+1}}" ng-value="no1">{{y.fake2}}</input> -->
+						<input style="width: 100px; height: 200px;" type="submit" value="cancel" ng-click="cancel()">
+						<button ng-click="guess(result)">Submit</button>
+					
+					
+			</div>
+			{{result}}
+		</div>
+	</body>
+</html>
